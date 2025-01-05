@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FaTimes, FaEdit } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
-import { updateUser } from '../services/api';
+import { updateUser } from '../services';
 
 const EditUserModal = ({ user, isOpen, onClose, onSuccess }) => {
   const { user: currentUser } = useAuth();

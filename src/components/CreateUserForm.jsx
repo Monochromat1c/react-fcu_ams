@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { createUser, getRoles, getDepartments } from '../services/api';
+import { createUser, getRoles, getDepartments } from '../services';
 
 const CreateUserForm = ({ onSuccess, onCancel }) => {
   const { user: currentUser } = useAuth();

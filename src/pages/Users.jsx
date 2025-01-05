@@ -5,8 +5,8 @@ import CreateUserForm from '../components/CreateUserForm';
 import ViewUserModal from '../components/ViewUserModal';
 import EditUserModal from '../components/EditUserModal';
 import DeleteUserModal from '../components/DeleteUserModal';
-import { FaPlus, FaTimes, FaEdit, FaTrash, FaArrowLeft, FaEye } from 'react-icons/fa';
-import { getUsers, deleteUser } from '../services/api';
+import { FaPlus, FaTimes, FaEdit, FaTrash, FaArrowLeft, FaEye, FaCheckCircle } from 'react-icons/fa';
+import { getUsers, deleteUser } from '../services';
 
 const Users = () => {
   const navigate = useNavigate();
@@ -15,10 +15,30 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
   const [showViewModal, setShowViewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  // Clear messages after 5 seconds
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        setSuccess('');
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   const fetchUsers = async () => {
     try {
@@ -39,6 +59,7 @@ const Users = () => {
 
   const handleCreateSuccess = () => {
     setShowCreateForm(false);
+    setSuccess('User created successfully');
     fetchUsers();
   };
 
@@ -59,6 +80,7 @@ const Users = () => {
 
   const handleEditSuccess = () => {
     setShowEditModal(false);
+    setSuccess('User updated successfully');
     setError('');
     fetchUsers();
   };
@@ -67,6 +89,7 @@ const Users = () => {
     try {
       await deleteUser(userId, currentUser.token);
       setShowDeleteModal(false);
+      setSuccess('User deleted successfully');
       setError('');
       fetchUsers();
     } catch (err) {
@@ -131,6 +154,14 @@ const Users = () => {
         </div>
 
         <div className="p-6">
+          {/* Messages */}
+          {success && (
+            <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-md flex items-center gap-2">
+              <FaCheckCircle className="text-green-500" />
+              {success}
+            </div>
+          )}
+          
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-md">
               {error}

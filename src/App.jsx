@@ -4,6 +4,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
+import AssetList from './pages/AssetList';
 
 const Unauthorized = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -42,6 +43,16 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <Users />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/asset-list"
+            element={
+              <ProtectedRoute>
+                <Dashboard>
+                  <AssetList />
+                </Dashboard>
               </ProtectedRoute>
             }
           />
